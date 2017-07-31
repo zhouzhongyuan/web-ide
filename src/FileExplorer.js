@@ -1,6 +1,6 @@
 import React from 'react';
 import TreeView from 'react-treeview';
-
+require('../node_modules/react-treeview/react-treeview.css');
 // This example data format is totally arbitrary. No data massaging is
 // required and you use regular js in `render` to iterate through and
 // construct your nodes.

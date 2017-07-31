@@ -57,6 +57,7 @@ class App extends Component {
                         <div
                             style={{
                                 textAlign: 'left',
+                                border: '1px solid grey',
                             }}
                         >
                                 <MonacoEditor />
