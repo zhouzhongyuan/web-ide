@@ -1,0 +1,49 @@
+{
+  "name": "web-ide",
+  "version": "0.0.1",
+  "description": "web ide",
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --config webpack.config.babel.js",
+    "start": "webpack-dev-server"
+  },
+  "keywords": [
+    "react"
+  ],
+  "author": "Zhongyuan",
+  "license": "MIT",
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
+    "babel-eslint": "^7.2.3",
+    "babel-loader": "^7.0.0",
+    "babel-plugin-transform-es3-member-expression-literals": "^6.22.0",
+    "babel-plugin-transform-es3-property-literals": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "babel-register": "^6.24.1",
+    "css-loader": "^0.28.1",
+    "eslint": "^3.15.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^3.0.2",
+    "eslint-plugin-react": "^6.9.0",
+    "file-loader": "^0.11.1",
+    "react-hot-loader": "^3.0.0-beta.7",
+    "style-loader": "^0.17.0",
+    "url-loader": "^0.5.8",
+    "webpack": "^2.5.1",
+    "webpack-dev-server": "^2.4.5"
+  },
+  "dependencies": {
+    "eslint-plugin-jsx-a11y": "^5.0.1",
+    "jquery": "^3.2.1",
+    "material-ui": "^1.0.0-beta.2",
+    "material-ui-icons": "^1.0.0-alpha.19",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4"
+  }
+}
