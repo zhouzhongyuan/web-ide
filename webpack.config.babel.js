@@ -1,10 +1,11 @@
 import path from 'path';
 import webpack from 'webpack';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 const config = {
     entry: [
         'react-hot-loader/patch',
         // 开启React代码的模块热替换（HMR）
-        'webpack-dev-server/client?http://localhost:8080',
+        'webpack-dev-server/client?http://localhost:3000',
         // 为webnpack-dev-server的环境打包代码，然后连接到制定服务器域名与端口
         'webpack/hot/only-dev-server',
         //为热替换（HRM）打包好代码，only- 意味着只有成功更新运行代码才会执行HMR
@@ -20,7 +21,7 @@ const config = {
     devServer: {
         compress: true,
         contentBase: path.resolve(__dirname, 'public'),
-        port: 8080,
+        port: 3000,
         hot: true,
         publicPath: '/',
     },
@@ -53,6 +54,12 @@ const config = {
         new webpack.HotModuleReplacementPlugin(),
         // 开启全局的HMR
         new webpack.NamedModulesPlugin(),
-    ]
+        new CopyWebpackPlugin([
+        {
+            from: 'node_modules/monaco-editor/min/vs',
+            to: 'vs',
+        },
+        ]),
+    ],
 };
 module.exports = config;

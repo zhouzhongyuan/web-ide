@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { MuiThemeProvider } from 'material-ui/styles';
-import List from './List';
-import Selection from './Selection';
 import { createMuiTheme } from 'material-ui/styles';
-
+import FileExplorer from './FileExplorer';
+import MonacoEditor from './MonacoEditor';
 const theme = createMuiTheme({
     status: {
         danger: 'orange',
@@ -41,7 +40,7 @@ class App extends Component {
             <div className="App">
                 <div className="App-header">
                     <img src={logo} className="App-logo" alt="logo" />
-                    <h2>兰兰</h2>
+                    <h2>Web IDE</h2>
                 </div>
                 <p className="App-intro">
                     加油！
@@ -49,18 +48,21 @@ class App extends Component {
                 <MuiThemeProvider
                     theme={theme}
                 >
-                    <div>
-                        <Selection
-                            hasChinese={this.state.hasChinese}
-                            hasPhonetic={this.state.hasPhonetic}
-                            hasSpeaker={this.state.hasSpeaker}
-                            changeState={this.changeState}
-                        />
-                        <List
-                            hasChinese={this.state.hasChinese}
-                            hasPhonetic={this.state.hasPhonetic}
-                            hasSpeaker={this.state.hasSpeaker}
-                        />
+                    <div
+                        style={{
+                            display: 'flex',
+                        }}
+                    >
+                        <FileExplorer />
+                        <div
+                            style={{
+                                textAlign: 'left',
+                            }}
+                        >
+                                <MonacoEditor />
+                        </div>
+                        
+
                     </div>
 
                 </MuiThemeProvider>
