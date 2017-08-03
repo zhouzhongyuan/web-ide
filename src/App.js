@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
+import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import logo from './logo.svg';
 import './App.css';
-import { MuiThemeProvider } from 'material-ui/styles';
-import { createMuiTheme } from 'material-ui/styles';
 import FileExplorer from './FileExplorer';
 import MonacoEditor from './MonacoEditor';
+
 const theme = createMuiTheme({
     status: {
         danger: 'orange',
@@ -35,7 +35,6 @@ class App extends Component {
         }
     }
     render() {
-        console.log(this.state);
         return (
             <div className="App">
                 <div className="App-header">
@@ -62,7 +61,6 @@ class App extends Component {
                         >
                                 <MonacoEditor />
                         </div>
-                        
 
                     </div>
 
