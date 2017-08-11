@@ -1,14 +1,8 @@
 import React, { Component } from 'react';
-import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import FileExplorer from './component/FileExplorer';
 import MonacoEditor from './component/MonacoEditor';
 import AppBar from './component/AppBar';
 
-const theme = createMuiTheme({
-    status: {
-        danger: 'orange',
-    },
-});
 class App extends Component {
     constructor(props) {
         super(props);
@@ -37,9 +31,6 @@ class App extends Component {
         return (
             <div className="App">
                 <AppBar />
-                <MuiThemeProvider
-                    theme={theme}
-                >
                     <div
                         style={{
                             display: 'flex',
@@ -56,8 +47,6 @@ class App extends Component {
                         </div>
 
                     </div>
-
-                </MuiThemeProvider>
             </div>
         );
     }

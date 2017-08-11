@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --config internal/webpack/webpack.prod.babel.js --color -p --progress",
-    "start": "sudo gulp serve"
+    "start": "sudo gulp serve",
+    "eslint": "./node_modules/.bin/eslint ./",
+    "eslint:fix": "./node_modules/.bin/eslint ./ --fix"
   },
   "keywords": [
     "react"
@@ -68,6 +70,7 @@
     "material-ui": "^1.0.0-beta.4",
     "material-ui-icons": "^1.0.0-alpha.19",
     "morgan": "~1.8.1",
+    "normalize.css": "^7.0.0",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-monaco-editor": "^0.8.1",
