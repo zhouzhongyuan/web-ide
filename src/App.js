@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
-import logo from './logo.svg';
-import './App.css';
-import FileExplorer from './FileExplorer';
-import MonacoEditor from './MonacoEditor';
+import FileExplorer from './component/FileExplorer';
+import MonacoEditor from './component/MonacoEditor';
 import AppBar from './component/AppBar';
+
 const theme = createMuiTheme({
     status: {
         danger: 'orange',
@@ -21,7 +20,6 @@ class App extends Component {
         };
     }
     changeState(key, value) {
-        console.log(key, value);
         switch (key) {
             case 'hasChinese':
                 this.setState({ hasChinese: value });
@@ -32,6 +30,7 @@ class App extends Component {
             case 'hasSpeaker':
                 this.setState({ hasSpeaker: value });
                 break;
+            default:
         }
     }
     render() {

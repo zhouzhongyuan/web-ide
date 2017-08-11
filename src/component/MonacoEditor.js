@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import MonacoEditor from 'react-monaco-editor';
-class MonacoEditorWrap extends Component{
+
+class MonacoEditorWrap extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -9,6 +10,7 @@ class MonacoEditorWrap extends Component{
         this.onChange = this.onChange.bind(this);
         this.editorDidMount = this.editorDidMount.bind(this);
     }
+    /* eslint-disable  */
     editorDidMount(editor, monaco) {
         console.log('editorDidMount', editor);
         editor.focus();
@@ -16,10 +18,12 @@ class MonacoEditorWrap extends Component{
     onChange(newValue, e) {
         console.log('onChange', newValue, e);
     }
+    /* eslint-enable  */
+
     render() {
         const code = this.state.code;
         const options = {
-        selectOnLineNumbers: true
+        selectOnLineNumbers: true,
         };
         return (
         <MonacoEditor
