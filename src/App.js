@@ -1,53 +1,34 @@
 import React, { Component } from 'react';
-import FileExplorer from './component/FileExplorer';
-import MonacoEditor from './component/MonacoEditor';
+import {
+    BrowserRouter as Router,
+    Route,
+    Link,
+} from 'react-router-dom';
+import 'typeface-roboto';
 import AppBar from './component/AppBar';
+import Home from './container/Home';
+import Login from './container/Login';
+import IDE from './container/IDE';
 
 class App extends Component {
     constructor(props) {
         super(props);
-        this.changeState = this.changeState.bind(this);
-        this.state = {
-            hasChinese: false,
-            hasPhonetic: false,
-            hasSpeaker: false,
-        };
-    }
-    changeState(key, value) {
-        switch (key) {
-            case 'hasChinese':
-                this.setState({ hasChinese: value });
-                break;
-            case 'hasPhonetic':
-                this.setState({ hasPhonetic: value });
-                break;
-            case 'hasSpeaker':
-                this.setState({ hasSpeaker: value });
-                break;
-            default:
-        }
     }
     render() {
         return (
-            <div className="App">
-                <AppBar />
-                    <div
-                        style={{
-                            display: 'flex',
-                        }}
-                    >
-                        <FileExplorer />
-                        <div
-                            style={{
-                                textAlign: 'left',
-                                border: '1px solid grey',
-                            }}
-                        >
-                                <MonacoEditor />
-                        </div>
-
-                    </div>
-            </div>
+            <Router>
+                <div className="App">
+                    <AppBar />
+                    <ul>
+                        <li><Link to="/">首页</Link></li>
+                        <li><Link to="/login">登录</Link></li>
+                        <li><Link to="/ide">编辑</Link></li>
+                    </ul>
+                    <Route exact path="/" component={Home} />
+                    <Route path="/login" component={Login} />
+                    <Route path="/ide" component={IDE} />
+                </div>
+            </Router>
         );
     }
 }
