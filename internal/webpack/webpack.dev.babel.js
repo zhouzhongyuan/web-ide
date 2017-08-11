@@ -7,7 +7,7 @@ const fs = require('fs');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
-const logger = require('../../server/logger');
+const logger = require('../../devServer/logger');
 const cheerio = require('cheerio');
 const pkg = require(path.resolve(process.cwd(), 'package.json'));
 const dllPlugin = pkg.dllPlugin;
@@ -30,7 +30,7 @@ module.exports = require('./webpack.base.babel')({
   entry: [
     'eventsource-polyfill', // Necessary for hot reloading with IE
     'webpack-hot-middleware/client?reload=true',
-    path.join(process.cwd(), 'app/app.js'), // Start with js/app.js
+    path.join(process.cwd(), 'src/index.js'), // Start with js/app.js
   ],
 
   // Don't use hashes in dev mode for better performance
@@ -133,7 +133,7 @@ function dependencyHandlers() {
  */
 function templateContent() {
   const html = fs.readFileSync(
-    path.resolve(process.cwd(), 'app/index.html')
+    path.resolve(process.cwd(), 'src/index.html')
   ).toString();
 
   if (!dllPlugin) { return html; }

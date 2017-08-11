@@ -3,7 +3,6 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-import CopyWebpackPlugin from 'copy-webpack-plugin';
 
 module.exports = require('./webpack.base.babel')({
     // In production, we skip all hot-reloading stuff
@@ -42,13 +41,7 @@ module.exports = require('./webpack.base.babel')({
             },
             inject: true,
         }),
-        // only for monaco-editor
-        new CopyWebpackPlugin([
-            {
-                from: 'node_modules/monaco-editor/min/vs',
-                to: 'vs',
-            },
-        ]),
+
     ],
 
     performance: {

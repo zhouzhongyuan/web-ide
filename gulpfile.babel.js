@@ -5,11 +5,10 @@ import gulpLoadPlugins from 'gulp-load-plugins';
 import runSequence from 'run-sequence';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
-import express from 'express';
 import minimist from 'minimist';
-import compression from 'compression';
 import packageJson from './package.json';
-import webpackConfig from './config';
+// import devConfig from './webpack.config.babel.js';
+import devConfig from './webpack.config.dev.babel.js';
 
 const knownOptions = {
     string: 'platform',
@@ -55,40 +54,23 @@ gulp.task('dist:static', () =>
 );
 
 // Start a livereloading development server
-gulp.task('serve:start', ['serve:static'], () => {
-    const config = webpackConfig[options.platform](true, DEST_DIR, PORT);
-    return new WebpackDevServer(webpack(config), {
-        contentBase: '.',
-        publicPath: '/generated/',
-        // watchDelay: 100,
-        disableHostCheck: true,
-    })
+gulp.task('serve:start',
+    ['serve:static'],
+    () => new WebpackDevServer(webpack(devConfig),
+        {
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, PATCH, OPTIONS",
+                "Access-Control-Allow-Headers": "X-Requested-With, content-type, Authorization",
+            },
+            compress: true,
+            contentBase: './build',
+            disableHostCheck: true,
+        },
+    )
         .listen(PORT, '0.0.0.0', (err) => {
             if (err) throw new $.util.PluginError('webpack-dev-server', err);
-
             $.util.log(`[${packageJson.name} serve]`, `Listening at 0.0.0.0:${PORT}`);
-        });
-});
+        })
+);
 
-// release，使用express，
-gulp.task('serve:startRelease', ['serve:static'], () => {
-    const app = express();
-    app.use(compression());
-    app.use(express.static(`${DEST_DIR}/generated`));
-    app.listen(PORT, (err) => {
-        if (err) throw new $.util.PluginError('express server', err);
-        $.util.log(`[${packageJson.name} serve]`, `Listening at 0.0.0.0:${PORT}`);
-    });
-});
-
-// Create a distributable package
-gulp.task(`dist:${DEST_DIR}`, ['dist:static'], (cb) => {
-    const config = webpackConfig[options.platform](false, DEST_DIR);
-    webpack(config, (err, stats) => {
-        if (err) throw new $.util.PluginError(DEST_DIR, err);
-
-        $.util.log(`[${packageJson.name} dist]`, stats.toString({ colors: true }));
-
-        cb();
-    });
-});

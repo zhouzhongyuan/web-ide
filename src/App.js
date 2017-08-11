@@ -4,7 +4,7 @@ import logo from './logo.svg';
 import './App.css';
 import FileExplorer from './FileExplorer';
 import MonacoEditor from './MonacoEditor';
-
+import AppBar from './component/AppBar';
 const theme = createMuiTheme({
     status: {
         danger: 'orange',
@@ -37,13 +37,7 @@ class App extends Component {
     render() {
         return (
             <div className="App">
-                <div className="App-header">
-                    <img src={logo} className="App-logo" alt="logo" />
-                    <h2>Web IDE</h2>
-                </div>
-                <p className="App-intro">
-                    加油！
-                </p>
+                <AppBar />
                 <MuiThemeProvider
                     theme={theme}
                 >
