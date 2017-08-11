@@ -43,6 +43,8 @@ class LoginPage extends Component {
         const password = this.state.password;
         console.log(name, password);
         // TODO checkLogin action
+        // Fake login
+        document.cookie = `name=${name}`;
     }
     render() {
         const classes = this.props.classes;
