@@ -5,6 +5,8 @@ import Button from 'material-ui/Button';
 import { withStyles, createStyleSheet } from 'material-ui/styles';
 import Card from 'material-ui/Card';
 import Icon from 'material-ui/Icon';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 const styleSheet = createStyleSheet(theme => ({
     container: {
@@ -27,26 +29,41 @@ class LoginPage extends Component {
         this.state = {
             name: '',
             password: '',
+            redirectToReferrer: false,
         };
         this.handleChangeName = this.handleChangeName.bind(this);
         this.handleChangePassword = this.handleChangePassword.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
+
     handleChangeName(event) {
         this.setState({ name: event.target.value });
     }
+
     handleChangePassword(event) {
         this.setState({ password: event.target.value });
     }
+
     handleSubmit() {
         const name = this.state.name;
         const password = this.state.password;
         console.log(name, password);
         // TODO checkLogin action
+        const user = { name };
         // Fake login
         document.cookie = `name=${name}`;
+        this.props.onFetchUserSuccess(user);
     }
+
     render() {
+        const { from } = this.props.location.state || { from: { pathname: '/' } };
+        console.log(from);
+        if (this.state.redirectToReferrer) {
+            return (
+                <Redirect to={from} />
+            );
+        }
+
         const classes = this.props.classes;
         return (
 
@@ -86,4 +103,12 @@ class LoginPage extends Component {
 LoginPage.propTypes = {
     classes: PropTypes.object.isRequired,
 };
-export default withStyles(styleSheet)(LoginPage);
+const mapStateToProps = state => ({
+    location: state.router.location,
+});
+const mapDispatchToProps = dispatch => ({
+    onFetchUserSuccess: (user) => {
+        dispatch({ type: 'USER_FETCH_SUCCEEDED', user });
+    },
+});
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styleSheet)(LoginPage));
