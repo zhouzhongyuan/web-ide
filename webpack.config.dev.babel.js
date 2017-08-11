@@ -6,7 +6,6 @@ export default {
     entry: {
         app: [
             'webpack-dev-server/client?http://localhost:80',
-            // 'webpack-dev-server/client?http://' + require("os").hostname() + ':3000/',
             'babel-polyfill',
             path.resolve(__dirname, 'src/index.js'),
         ],
