@@ -4,22 +4,13 @@ import gulpLoadPlugins from 'gulp-load-plugins';
 import runSequence from 'run-sequence';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
-import minimist from 'minimist';
 import packageJson from './package.json';
 import devConfig from './webpack.config.dev.babel';
-
-const knownOptions = {
-    string: 'platform',
-    default: { platform: 'web' },
-};
-
-const options = minimist(process.argv.slice(3), knownOptions);
 
 const PORT = process.env.PORT || 80;
 const $ = gulpLoadPlugins({ camelize: true });
 
 const DEST_DIR = process.env.DEST_DIR || 'build';
-$.util.log(options);
 
 // Main tasks
 gulp.task('serve', () => runSequence('serve:clean', 'serve:start'));

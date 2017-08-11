@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack --config internal/webpack/webpack.prod.babel.js --color -p --progress",
-    "start:gulp": "gulp serve --platform web"
+    "start": "sudo gulp serve"
   },
   "keywords": [
     "react"
@@ -67,7 +67,6 @@
     "jquery": "^3.2.1",
     "material-ui": "^1.0.0-beta.4",
     "material-ui-icons": "^1.0.0-alpha.19",
-    "minimist": "^1.2.0",
     "morgan": "~1.8.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
