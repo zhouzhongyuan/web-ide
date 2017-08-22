@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
-    BrowserRouter as Router,
     Route,
     Link,
-    Redirect,
+    Switch,
+    withRouter,
 } from 'react-router-dom';
+import { connect } from 'react-redux';
 import 'typeface-roboto';
 import AppBar from './component/AppBar';
 import Home from './container/Home';
@@ -12,63 +14,47 @@ import Login from './container/Login';
 import IDE from './container/IDE';
 import ProjectList from './container/ProjectList';
 import Project from './container/Project';
-import { connect } from 'react-redux';
+import PrivateRoute from './component/PrivateRoute';
 
 class App extends Component {
-    constructor(props) {
-        super(props);
+    static defaultProps = {
+        isAuthenticated: false,
     }
     render() {
         return (
-            <Router>
-                <div className="App">
-                    <AppBar />
-                    <ul>
-                        <li><Link to="/">首页</Link></li>
-                        <li><Link to="/login">登录</Link></li>
-                        <li><Link to="/project">项目</Link></li>
-                    </ul>
+            <div className="App">
+                <AppBar />
+                <ul>
+                    <li><Link to="/">首页</Link></li>
+                    <li><Link to="/project">项目</Link></li>
+                </ul>
+                <Switch>
                     <Route exact path="/" component={Home} />
                     <Route path="/login" component={Login} />
-                    <PrivateRoute exact path="/project" component={ProjectList} isAuthenticated={this.props.isAuthenticated} />
-                    {/* <PrivateRoute path="/project/:id" component={Project} /> */}
-                    {/* <PrivateRoute path="/ide" component={IDE} /> */}
-                </div>
-            </Router>
+                    {/* <Route exact path="/project" component={ProjectList} /> */}
+                    <PrivateRoute exact path="/project" {...this.props} component={ProjectList} isAuthenticated={this.props.isAuthenticated} />
+                     {/* <PrivateRoute path="/project/:id" component={Project} /> */}
+                     {/* <PrivateRoute path="/ide" component={IDE} /> */}
+                </Switch>
+            </div>
         );
     }
 }
 
-const PrivateRoute = ({ component: Component, isAuthenticated, ...rest }) => {
-    console.log(isAuthenticated);
-    return (
-        <Route
-            {...rest}
-            render={props => (
-                isAuthenticated ?
-                    <Component {...props} /> :
-                    (<Redirect
-                        to={{
-                            pathname: '/login',
-                            state: { from: props.location },
-                        }}
-                    />)
-            )
-            }
-        />
-    );
-};
+const mapStateToProps = (state) => {
+    let isAuthenticated = false;
+    try {
+        isAuthenticated = !!state.get('app').user.name;
+    } catch (e) {
+        console.log(e); // eslint-disable-line
+    }
+    return ({
+    isAuthenticated,
+    // location: state.router.location,
 
-const mapStateToProps = function (state) {
-    console.log(state.app.user);
-    return {
-        isAuthenticated: !!state.app.user.name,
-    };
+});
 };
-const mapDispatchToProps = function (dispatch) {
-    return {
-
-    };
+App.propTypes = {
+    isAuthenticated: PropTypes.bool,
 };
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps)(App));

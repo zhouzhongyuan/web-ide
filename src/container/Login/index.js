@@ -1,4 +1,4 @@
-import React, { Component, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button';
@@ -8,7 +8,7 @@ import Icon from 'material-ui/Icon';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-const styleSheet = createStyleSheet(theme => ({
+const styleSheet = createStyleSheet({
     container: {
         display: 'flex',
         flexDirection: 'column',
@@ -21,21 +21,22 @@ const styleSheet = createStyleSheet(theme => ({
     loginButton: {
         marginTop: 32,
     },
-}));
+});
 
-class LoginPage extends Component {
+class LoginPage extends PureComponent {
+    static defaultProps = {
+        redirectToReferrer: false,
+    }
     constructor(props) {
         super(props);
         this.state = {
             name: '',
             password: '',
-            redirectToReferrer: false,
         };
         this.handleChangeName = this.handleChangeName.bind(this);
         this.handleChangePassword = this.handleChangePassword.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-
     handleChangeName(event) {
         this.setState({ name: event.target.value });
     }
@@ -46,8 +47,7 @@ class LoginPage extends Component {
 
     handleSubmit() {
         const name = this.state.name;
-        const password = this.state.password;
-        console.log(name, password);
+        const password = this.state.password; // eslint-disable-line
         // TODO checkLogin action
         const user = { name };
         // Fake login
@@ -57,13 +57,11 @@ class LoginPage extends Component {
 
     render() {
         const { from } = this.props.location.state || { from: { pathname: '/' } };
-        console.log(from);
-        if (this.state.redirectToReferrer) {
+        if (this.props.redirectToReferrer) {
             return (
                 <Redirect to={from} />
             );
         }
-
         const classes = this.props.classes;
         return (
 
@@ -101,14 +99,32 @@ class LoginPage extends Component {
 }
 
 LoginPage.propTypes = {
-    classes: PropTypes.object.isRequired,
+    classes: PropTypes.shape({
+        container: PropTypes.string,
+    }).isRequired,
+    onFetchUserSuccess: PropTypes.func.isRequired,
+    location: PropTypes.shape({
+        pathname: PropTypes.string,
+        search: PropTypes.string,
+        hash: PropTypes.string,
+        key: PropTypes.string,
+    }).isRequired,
+    redirectToReferrer: PropTypes.bool,
 };
-const mapStateToProps = state => ({
-    location: state.router.location,
+const mapStateToProps = (state) => {
+    const JSState = state.toJS();
+    return ({
+    location: JSState.route.location,
+    redirectToReferrer: !!JSState.app.user.name,
 });
+};
 const mapDispatchToProps = dispatch => ({
     onFetchUserSuccess: (user) => {
         dispatch({ type: 'USER_FETCH_SUCCEEDED', user });
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styleSheet)(LoginPage));
+// export default withRouter(
+//     connect(mapStateToProps, mapDispatchToProps)(
+//         withStyles(styleSheet)(LoginPage)
+//     ));

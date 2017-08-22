@@ -2,17 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { MuiThemeProvider, createMuiTheme } from 'material-ui/styles';
 import 'normalize.css';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
-import { routerReducer, routerMiddleware, ConnectedRouter } from 'react-router-redux';
-
+import { routerMiddleware, ConnectedRouter } from 'react-router-redux';
 // Load the favicon, the manifest.json file and the .htaccess file
 /* eslint-disable import/no-webpack-loader-syntax */
-import '!file-loader?name=[name].[ext]!./icon.png';
-import App from './App';
-import webIDEApp from './reducer';
-
 import createHistory from 'history/createBrowserHistory';
+import '!file-loader?name=[name].[ext]!./icon.png'; // eslint-disable-line
+import createReducer from './reducer';
+import App from './App';
 
 const history = createHistory();
 
@@ -21,23 +19,22 @@ const routerMW = routerMiddleware(history);
 const theme = createMuiTheme();
 /* eslint-disable no-underscore-dangle */
 const store = createStore(
-    combineReducers({
-        app: webIDEApp,
-        router: routerReducer,
-    }),
-    applyMiddleware(routerMW),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+    createReducer(),
+    compose(
+        applyMiddleware(routerMW),
+        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+    ),
 );
 /* eslint-enable */
 ReactDOM.render(
     <Provider store={store}>
-        <ConnectedRouter history={history}>
-            <MuiThemeProvider
-                theme={theme}
-            >
+        <MuiThemeProvider
+            theme={theme}
+        >
+            <ConnectedRouter history={history}>
                 <App />
-            </MuiThemeProvider>
-        </ConnectedRouter>
+            </ConnectedRouter>
+        </MuiThemeProvider>
     </Provider>,
     document.getElementById('root'),
 );
