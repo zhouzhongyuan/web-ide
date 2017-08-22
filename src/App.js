@@ -11,9 +11,10 @@ import 'typeface-roboto';
 import AppBar from './component/AppBar';
 import Home from './container/Home';
 import Login from './container/Login';
-import IDE from './container/IDE';
 import ProjectList from './container/ProjectList';
-import Project from './container/Project';
+import TaskList from './container/TaskList';
+import ProjectNew from './container/ProjectNew';
+import TaskNew from './container/TaskNew';
 import PrivateRoute from './component/PrivateRoute';
 
 class App extends Component {
@@ -33,6 +34,9 @@ class App extends Component {
                     <Route path="/login" component={Login} />
                     {/* <Route exact path="/project" component={ProjectList} /> */}
                     <PrivateRoute exact path="/project" {...this.props} component={ProjectList} isAuthenticated={this.props.isAuthenticated} />
+                    <PrivateRoute exact path="/project/new" {...this.props} component={ProjectNew} isAuthenticated={this.props.isAuthenticated} />
+                    <PrivateRoute exact path="/task" {...this.props} component={TaskList} isAuthenticated={this.props.isAuthenticated} />
+                    <PrivateRoute exact path="/task/new" {...this.props} component={TaskNew} isAuthenticated={this.props.isAuthenticated} />
                      {/* <PrivateRoute path="/project/:id" component={Project} /> */}
                      {/* <PrivateRoute path="/ide" component={IDE} /> */}
                 </Switch>

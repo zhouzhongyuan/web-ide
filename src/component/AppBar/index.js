@@ -12,6 +12,8 @@ import { Link } from 'react-router-dom';
 import Avatar from 'material-ui/Avatar';
 import deepOrange from 'material-ui/colors/deepOrange';
 
+import AddDropDownMenu from '../DropDownMenu';
+
 const styleSheet = createStyleSheet({
     root: {
         width: '100%',
@@ -30,6 +32,7 @@ const styleSheet = createStyleSheet({
     loginContainer: {
         display: 'flex',
         flexDirection: 'row',
+        alginItems: 'center',
     },
 });
 
@@ -59,6 +62,7 @@ class ButtonAppBar extends Component {
                         </Typography>
                         {this.props.isLogin ?
                             <div className={classes.loginContainer}>
+                                <AddDropDownMenu />
                                 <Avatar className={classes.orangeAvatar}>
                                     {this.props.userName.charAt(0).toUpperCase()}
                                 </Avatar>

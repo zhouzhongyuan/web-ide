@@ -1,5 +1,5 @@
 import React from 'react';
 
 export default function () {
-    return (<div>task#id=*****</div>);
+    return (<div>Task list</div>);
 }

@@ -70,6 +70,7 @@ class LoginPage extends PureComponent {
                     account_circle
                 </Icon>
                 <TextField
+                    autoFocus
                     id="name"
                     label="用户名"
                     value={this.state.name}
@@ -124,7 +125,3 @@ const mapDispatchToProps = dispatch => ({
     },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styleSheet)(LoginPage));
-// export default withRouter(
-//     connect(mapStateToProps, mapDispatchToProps)(
-//         withStyles(styleSheet)(LoginPage)
-//     ));
