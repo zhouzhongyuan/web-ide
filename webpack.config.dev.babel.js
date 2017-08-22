@@ -13,6 +13,7 @@ export default {
     output: {
         path: path.resolve(__dirname, 'generated'),
         filename: '[name].js',
+        publicPath: '/',
     },
     devtool: 'eval-source-map',
     module: {
