@@ -47,7 +47,6 @@ class ButtonAppBar extends Component {
     }
     render() {
         const classes = this.props.classes;
-
         return (
             <div className={classes.root}>
                 <AppBar position="static">
@@ -81,7 +80,9 @@ class ButtonAppBar extends Component {
 }
 
 ButtonAppBar.propTypes = {
-    classes: PropTypes.object.isRequired,
+    classes: PropTypes.shape({
+        root: PropTypes.string,
+    }).isRequired,
     handleLogout: PropTypes.func,
     isLogin: PropTypes.bool,
     userName: PropTypes.string,
@@ -90,7 +91,7 @@ ButtonAppBar.propTypes = {
 function mapStateToProps(state) {
     const app = state.get('app');
     return {
-        isLogin: app.user.name,
+        isLogin: !!app.user.name,
         userName: app.user.name,
     };
 }
