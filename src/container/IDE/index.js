@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import FileExplorer from '../../component/FileExplorer';
 import MonacoEditor from '../../component/MonacoEditor';
+import Preview from '../../component/Preview';
+import MonacoEditorButton from '../../component/MonacoEditorButton';
+
 
 class IDE extends Component {
+
     render() {
         return (
             <div
@@ -10,6 +14,7 @@ class IDE extends Component {
                     display: 'flex',
                 }}
             >
+                {/* <Preview /> */}
                 <FileExplorer />
                 <div
                     style={{
@@ -18,6 +23,7 @@ class IDE extends Component {
                     }}
                 >
                     <MonacoEditor />
+                    <MonacoEditorButton />
                 </div>
 
             </div>

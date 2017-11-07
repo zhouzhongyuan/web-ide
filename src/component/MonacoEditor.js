@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import MonacoEditor from 'react-monaco-editor';
+import { connect } from 'react-redux';
 
 class MonacoEditorWrap extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-        code: '// type your code...',
-        };
         this.onChange = this.onChange.bind(this);
         this.editorDidMount = this.editorDidMount.bind(this);
     }
@@ -16,14 +14,14 @@ class MonacoEditorWrap extends Component {
         editor.focus();
     }
     onChange(newValue, e) {
-        console.log('onChange', newValue, e);
+        this.props.changeCurrentCode(newValue, this.props.currentPath);
     }
-    /* eslint-enable  */
 
     render() {
-        const code = this.state.code;
+        console.log('monacoEditor render');
+        const code = this.props.content[this.props.currentPath];
         const options = {
-        selectOnLineNumbers: true,
+            selectOnLineNumbers: true,
         };
         return (
         <MonacoEditor
@@ -38,4 +36,20 @@ class MonacoEditorWrap extends Component {
         );
     }
 }
-export default MonacoEditorWrap;
+function mapStateToProps(state) {
+    const app = state.get('app');
+    return {
+        currentPath: app.currentPath,
+        content: app.content,
+    };
+}
+function mapDispatchToProps(dispatch) {
+    return {
+        changeCurrentCode: (content, path) => dispatch({
+            type: 'FILE_CONTENT_CHANGE',
+            path,
+            content,
+        }),
+    };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(MonacoEditorWrap);

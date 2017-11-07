@@ -31,7 +31,14 @@ function routeReducer(state = routeInitialState, action) {
 }
 
 const initialState = {
-        user: {},
+        user: {
+            name: 'tmp',
+        },
+        currentCode: '//修改代码吧',
+        currentPath: '',
+        fileTree: [],
+        content: {},
+
 };
 
 function appReducer(state, action) {
@@ -47,6 +54,19 @@ function appReducer(state, action) {
             return Object.assign({}, state, {
                 user: {},
             });
+        case 'CURRENT_PATH_CHANGE':
+            return Object.assign({}, state, {
+                currentPath: action.path,
+            });
+        case 'FILE_TREE_CHANGE':
+            return Object.assign({}, state, {
+                fileTree: action.fileTree,
+            });
+        case 'FILE_CONTENT_CHANGE':
+            console.log('FILE_CONTENT_CHANGE');
+            const newState = Object.assign({}, state);
+            newState.content[action.path] = action.content;
+            return newState;
         default:
             return state;
     }
