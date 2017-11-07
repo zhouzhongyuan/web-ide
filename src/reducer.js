@@ -34,7 +34,6 @@ const initialState = {
         user: {
             name: 'tmp',
         },
-        currentCode: '//修改代码吧',
         currentPath: '',
         fileTree: [],
         content: {},

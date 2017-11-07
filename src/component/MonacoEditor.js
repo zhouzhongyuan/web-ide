@@ -19,15 +19,16 @@ class MonacoEditorWrap extends Component {
 
     render() {
         console.log('monacoEditor render');
-        const code = this.props.content[this.props.currentPath];
+        const code = this.props.pathContent;
         const options = {
             selectOnLineNumbers: true,
         };
         return (
         <MonacoEditor
-            width="800"
-            height="600"
+            // width="800"
+            // height="600"
             language="javascript"
+            // theme="vs-dark"
             value={code}
             options={options}
             onChange={this.onChange}
@@ -40,7 +41,7 @@ function mapStateToProps(state) {
     const app = state.get('app');
     return {
         currentPath: app.currentPath,
-        content: app.content,
+        pathContent: app.content[app.currentPath],
     };
 }
 function mapDispatchToProps(dispatch) {

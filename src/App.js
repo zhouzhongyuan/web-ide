@@ -17,6 +17,7 @@ import ProjectNew from './container/ProjectNew';
 import TaskNew from './container/TaskNew';
 import IDE from './container/IDE';
 import PrivateRoute from './component/PrivateRoute';
+import Divider from 'material-ui/Divider';
 
 class App extends Component {
     static defaultProps = {
@@ -24,13 +25,23 @@ class App extends Component {
     }
     render() {
         return (
-            <div className="App">
+            <div
+                style={{
+                    height: '100%',
+                    overflowX: 'hidden',
+                    overflowY: 'hidden',
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}
+
+            >
                 <AppBar />
-                <ul>
-                    <li><Link to="/">首页</Link></li>
-                    <li><Link to="/project">项目</Link></li>
-                    <li><Link to="/ide">编辑器</Link></li>
-                </ul>
+                {/*<ul>*/}
+                    {/*<li><Link to="/">首页</Link></li>*/}
+                    {/*<li><Link to="/project">项目</Link></li>*/}
+                    {/*<li><Link to="/ide">编辑器</Link></li>*/}
+                {/*</ul>*/}
+                <Divider />
                 <Switch>
                     <Route exact path="/" component={Home} />
                     <Route path="/login" component={Login} />

@@ -1,67 +1,53 @@
 import React from 'react';
-import TreeView from 'react-treeview';
 import { connect } from 'react-redux';
-
-require('../../node_modules/react-treeview/react-treeview.css');
+import List, { ListItem, ListItemText } from 'material-ui/List';
 
 class Lists extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
-            collapsedBookkeeping: this.props.fileTree.map(() => false),
+
         };
-        this.handleClick = this.handleClick.bind(this);
-        this.collapseAll = this.collapseAll.bind(this);
         this.changeCurrentPath = this.changeCurrentPath.bind(this);
     }
 
-    handleClick(i) {
-        const [...collapsedBookkeeping] = this.state.collapsedBookkeeping;
-        collapsedBookkeeping[i] = !collapsedBookkeeping[i];
-        this.setState({ collapsedBookkeeping });
-    }
-
-    collapseAll() {
+    changeCurrentPath(path, i) {
         this.setState({
-            collapsedBookkeeping: this.state.collapsedBookkeeping.map(() => true),
+            selectedIndex: i,
         });
-    }
-
-    changeCurrentPath(path) {
-        this.props.changeCurrentPath(path, this.props.content);
+        this.props.changeCurrentPath(path, this.props.pathContent);
     }
 
     async componentDidMount() {
         // get fileTree
         const path = 'http://127.0.0.1:3000/fileTree';
-        console.log(path);
         const response = await fetch(path);
         const fileTree = await response.json();
-        console.log(fileTree);
         this.props.changeFileTree(fileTree);
     }
     render() {
-        const collapsedBookkeeping = this.state.collapsedBookkeeping;
         return (
-            <div>
+            <List
+                style={{
+                    width: 246,
+                    maxWidth: 246,
+                }}
+
+            >
                 {this.props.fileTree.map((node, i) => (
-                        <TreeView
+                        <ListItem
                             key={i}
-                            collapsed={collapsedBookkeeping[i]}
-                            onClick={this.handleClick.bind(null, i)}
+                            onClick={() => this.changeCurrentPath(node, i)}
+                            button
+                            style={this.state.selectedIndex === i ? { backgroundColor: 'rgba(0,0,0,0.2)' } : {}}
                         >
-                            {node.map(entry =>
-                                (<div
-                                className="info"
-                                key={entry}
-                                onClick={() => this.changeCurrentPath(entry)}
-                                >
-                                    {entry}
-                                </div>))}
-                        </TreeView>
-                    ))}
-            </div>
+                            <ListItemText
+                                primary={node}
+                            />
+                        </ListItem>
+                    ))
+                }
+            </List>
         );
     }
 }
@@ -70,36 +56,18 @@ function mapStateToProps(state) {
     const app = state.get('app');
     return {
         currentPath: app.currentPath,
-        fileTree: [app.fileTree],
-        content: app.content,
+        fileTree: app.fileTree,
+        pathContent: app.content[app.currentPath],
+
     };
 }
 function mapDispatchToProps(dispatch) {
     return {
-        changeCurrentPath: (path, content) => {
-            async function getContentOfPath() {
-                // 如果store中已经有了content，不向后台请求。
-                if (content[path]) {
-                    return;
-                }
-
-                const remotePath = `http://127.0.0.1:3000/file?path=${path}`;
-                const response = await fetch(remotePath);
-                const code = await response.json();
-                if (code.success) {
-                    dispatch({
-                        type: 'FILE_CONTENT_CHANGE',
-                        path,
-                        content: code.content,
-                    });
-                }
-            }
-            setTimeout(getContentOfPath, 0);
-            return dispatch({
+        changeCurrentPath: (path, pathContent) => dispatch({
                 type: 'CURRENT_PATH_CHANGE',
                 path,
-            });
-        },
+                pathContent,
+            }),
         changeFileTree: fileTree => dispatch({
             type: 'FILE_TREE_CHANGE',
             fileTree,

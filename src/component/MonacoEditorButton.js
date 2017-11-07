@@ -30,6 +30,10 @@ class MonacoEditorButton extends React.Component {
                 raised
                 color="primary"
                 onClick={this.handleSave}
+                style={{
+                    alignSelf: 'flex-end',
+                    marginBottom: 24,
+                }}
             >
                 保存
             </Button>

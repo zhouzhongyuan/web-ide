@@ -17,6 +17,7 @@ import AddDropDownMenu from '../DropDownMenu';
 const styleSheet = createStyleSheet({
     root: {
         width: '100%',
+        marginBottom: 24,
     },
     flex: {
         flex: 1,
@@ -54,28 +55,28 @@ class ButtonAppBar extends Component {
             <div className={classes.root}>
                 <AppBar position="static">
                     <Toolbar>
-                        <IconButton color="contrast" aria-label="Menu">
-                            <MenuIcon />
-                        </IconButton>
+                        {/*<IconButton color="contrast" aria-label="Menu">*/}
+                            {/*<MenuIcon />*/}
+                        {/*</IconButton>*/}
                         <Typography type="title" color="inherit" className={classes.flex}>
                             Web Editor
                         </Typography>
-                        {this.props.isLogin ?
-                            <div className={classes.loginContainer}>
-                                <AddDropDownMenu />
-                                <Avatar className={classes.orangeAvatar}>
-                                    {this.props.userName.charAt(0).toUpperCase()}
-                                </Avatar>
-                                <Button
-                                    color="contrast"
-                                    onClick={this.handleLogout}
-                                >
-                                    退出
-                                </Button>
-                            </div>
-                             :
-                            <Link to="/login"> <Button color="contrast">登录</Button></Link>
-                        }
+                        {/*{this.props.isLogin ?*/}
+                            {/*<div className={classes.loginContainer}>*/}
+                                {/*<AddDropDownMenu />*/}
+                                {/*<Avatar className={classes.orangeAvatar}>*/}
+                                    {/*{this.props.userName.charAt(0).toUpperCase()}*/}
+                                {/*</Avatar>*/}
+                                {/*<Button*/}
+                                    {/*color="contrast"*/}
+                                    {/*onClick={this.handleLogout}*/}
+                                {/*>*/}
+                                    {/*退出*/}
+                                {/*</Button>*/}
+                            {/*</div>*/}
+                             {/*:*/}
+                            {/*<Link to="/login"> <Button color="contrast">登录</Button></Link>*/}
+                        {/*}*/}
                     </Toolbar>
                 </AppBar>
             </div>
