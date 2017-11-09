@@ -5,6 +5,9 @@ import { withStyles, createStyleSheet } from 'material-ui/styles';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import deivceAndroidBgImage from './devices-sprite.jpg';
+import config from '../../config';
+
+const { previewURL } = config;
 const styleSheet = createStyleSheet({
     root: {
         flexDirection: 'row',
@@ -47,7 +50,7 @@ class Preview extends Component {
                 <iframe
                     className={classes.frame}
                     id="demo-ios"
-                    src="http://127.0.0.1:8001/"
+                    src={previewURL}
                     frameBorder="0"
                     title="demoDevice"
                 />

@@ -1,7 +1,9 @@
 import {delay} from 'redux-saga';
 
 import {call, put, takeEvery} from 'redux-saga/effects';
+import config from './config';
 
+const { server } = config;
 function getContent(path,pathContent) {
     return new Promise(async (resolve, reject) => {
         // 如果store中已经有了content，不向后台请求。
@@ -9,7 +11,7 @@ function getContent(path,pathContent) {
             return;
         }
 
-        const remotePath = `http://127.0.0.1:3000/file?path=${path}`;
+        const remotePath = `${server}/file?path=${path}`;
         const response = await fetch(remotePath);
         const code = await response.json();
         if (code.success) {

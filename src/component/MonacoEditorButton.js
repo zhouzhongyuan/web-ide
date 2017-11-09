@@ -1,6 +1,9 @@
 import React from 'react';
 import Button from 'material-ui/Button';
 import { connect } from 'react-redux';
+import config from '../config';
+
+const { server } = config;
 class MonacoEditorButton extends React.Component {
     constructor(props) {
         super(props);
@@ -9,7 +12,7 @@ class MonacoEditorButton extends React.Component {
     async handleSave() {
         const code = this.props.content[this.props.currentPath];
 
-        const path = 'http://127.0.0.1:3000/file';
+        const path = `${server}/file`;
         const response = await fetch(path, {
             method: 'PUT',
             headers: new Headers({
