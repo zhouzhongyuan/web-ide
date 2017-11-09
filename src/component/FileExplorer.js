@@ -1,7 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import List, { ListItem, ListItemText } from 'material-ui/List';
+import config from '../config';
 
+const { server } = config;
 class Lists extends React.Component {
     constructor(props) {
         super(props);
@@ -20,7 +22,7 @@ class Lists extends React.Component {
 
     async componentDidMount() {
         // get fileTree
-        const path = 'http://127.0.0.1:3000/fileTree';
+        const path = `${server}/fileTree`;
         const response = await fetch(path);
         const fileTree = await response.json();
         this.props.changeFileTree(fileTree);
