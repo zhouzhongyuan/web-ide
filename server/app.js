@@ -5,9 +5,10 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const webpack = require('webpack');
+const webpackMiddleware = require('webpack-dev-middleware');
+const devConfig = require('../webpack.config.dev.babel');
 
-const index = require('./routes/index');
-const users = require('./routes/users');
 const file = require('./routes/file');
 const fileTree = require('./routes/fileTree');
 
@@ -27,10 +28,25 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api', index);
-app.use('/users', users);
+
+
+const compiler = webpack(devConfig);
+app.use(webpackMiddleware(compiler, {
+    // publicPath is required, whereas all other options are optional
+
+
+    publicPath: "/",
+    // public path to bind the middleware to
+    // use the same as in webpack
+    historyApiFallback: true,
+
+}));
+
+app.use(require("webpack-hot-middleware")(compiler));
+
 app.use('/file', file);
 app.use('/fileTree', fileTree);
+
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

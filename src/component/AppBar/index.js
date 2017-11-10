@@ -59,7 +59,7 @@ class ButtonAppBar extends Component {
                             {/*<MenuIcon />*/}
                         {/*</IconButton>*/}
                         <Typography type="title" color="inherit" className={classes.flex}>
-                            Web Editor
+                            Web Editor111
                         </Typography>
                         {/*{this.props.isLogin ?*/}
                             {/*<div className={classes.loginContainer}>*/}

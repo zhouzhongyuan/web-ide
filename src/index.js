@@ -5,6 +5,8 @@ import 'normalize.css';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import { routerMiddleware, ConnectedRouter } from 'react-router-redux';
+
+import {BrowserRouter, HashRouter} from 'react-router-dom';
 import createSagaMiddleware from 'redux-saga';
 
 // Load the favicon, the manifest.json file and the .htaccess file
@@ -36,15 +38,28 @@ const store = createStore(
 
 sagaMiddleware.run(mySaga);
 /* eslint-enable */
-ReactDOM.render(
-    <Provider store={store}>
-        <MuiThemeProvider
-            theme={theme}
-        >
-            <ConnectedRouter history={history}>
-                <App />
-            </ConnectedRouter>
-        </MuiThemeProvider>
-    </Provider>,
-    document.getElementById('root'),
-);
+
+function render(Component) {
+    ReactDOM.render(
+        <Provider store={store}>
+            <MuiThemeProvider
+                theme={theme}
+            >
+                <ConnectedRouter history={history}>
+                    <HashRouter>
+                        <Component />
+                    </HashRouter>
+                </ConnectedRouter>
+            </MuiThemeProvider>
+        </Provider>,
+        document.getElementById('root'),
+    );
+}
+
+render(App);
+
+
+// Webpack Hot Module Replacement API
+if (module.hot) {
+    module.hot.accept('./App', () => { render(App) })
+}

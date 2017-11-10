@@ -1,11 +1,17 @@
-import path from 'path';
-import HtmlWebpackPlugin from 'html-webpack-plugin';
-import CopyWebpackPlugin from 'copy-webpack-plugin';
 
-export default {
+const path = require('path');
+const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
+
+
+module.exports = {
     entry: {
         app: [
-            'webpack-dev-server/client?http://localhost:80',
+            // 'webpack-dev-server/client?http://localhost:80',
+            'react-hot-loader/patch',
+            'webpack-hot-middleware/client',
             'babel-polyfill',
             path.resolve(__dirname, 'src/index.js'),
         ],
@@ -14,6 +20,9 @@ export default {
         path: path.resolve(__dirname, 'generated'),
         filename: '[name].js',
         publicPath: '/',
+    },
+    devServer: {
+         hot: true,
     },
     devtool: 'eval-source-map',
     module: {
@@ -56,5 +65,10 @@ export default {
                 to: 'vs',
             },
         ]),
+        new webpack.optimize.OccurrenceOrderPlugin(),
+        new webpack.NamedModulesPlugin(),
+        new webpack.HotModuleReplacementPlugin(),
+        // Use NoErrorsPlugin for webpack 1.x
+        new webpack.NoEmitOnErrorsPlugin()
     ],
 };
