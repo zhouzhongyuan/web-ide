@@ -21,7 +21,7 @@ router.get('/', (req, res, next) => {
 });
 
 router.put('/', (req, res, next) => {
-    const filePath = path.join(basePath, req.body.path);
+    const filePath = path.join(config.projectPath, req.body.path);
     const code = req.body.code;
     fs.writeFile(filePath, code, (err) => {
         if (err) {
