@@ -6,15 +6,19 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const webpack = require('webpack');
-const webpackMiddleware = require('webpack-dev-middleware');
+const webpackDevMiddleware = require('webpack-dev-middleware');
+const webpackHotMiddleware = require('webpack-hot-middleware');
 const devConfig = require('../webpack.config.dev.babel');
+// const projectWepackConfig = require('../../../06/yesdemo/src/config/webpack.config');
+var compression = require('compression');
+
 
 const file = require('./routes/file');
 const fileTree = require('./routes/fileTree');
 
 const app = express();
 
-
+app.use(compression());
 app.use(cors())
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -27,22 +31,27 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'build')));
 
 
-
+// front-end
 const compiler = webpack(devConfig);
-app.use(webpackMiddleware(compiler, {
-    // publicPath is required, whereas all other options are optional
-
-
+app.use(webpackDevMiddleware(compiler, {
     publicPath: "/",
-    // public path to bind the middleware to
-    // use the same as in webpack
     historyApiFallback: true,
 
 }));
+app.use(webpackHotMiddleware(compiler));
 
-app.use(require("webpack-hot-middleware")(compiler));
+//
+// // project preview
+// const projectCompiler = webpack(projectWepackConfig(true,'',4000));
+// app.use(webpackDevMiddleware(projectCompiler, {
+//     publicPath: '/thgn',
+//
+// }));
+// app.use(webpackHotMiddleware(projectCompiler));
+
 
 app.use('/file', file);
 app.use('/fileTree', fileTree);
