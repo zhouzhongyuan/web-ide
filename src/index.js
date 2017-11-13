@@ -32,7 +32,6 @@ const store = createStore(
     createReducer(),
     compose(
         applyMiddleware(routerMW, sagaMiddleware),
-        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
     ),
 );
 
