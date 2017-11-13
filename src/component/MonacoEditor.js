@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import MonacoEditor from 'react-monaco-editor';
 import { connect } from 'react-redux';
+import config from '../config';
+const { server } = config;
 
 class MonacoEditorWrap extends Component {
     constructor(props) {
@@ -14,7 +16,19 @@ class MonacoEditorWrap extends Component {
         editor.focus();
     }
     onChange(newValue, e) {
-        this.props.changeCurrentCode(newValue, this.props.currentPath);
+        this.props.changeCurrentContent(newValue, this.props.currentPath);
+    }
+    async componentDidUpdate(){
+        if(!this.props.pathContent){
+            const remotePath = `${server}/file?path=${this.props.currentPath}`;
+            const response = await fetch(remotePath);
+            const code = await response.json();
+            if (code.success) {
+                this.props.changeCurrentContent(code.content, this.props.currentPath);
+            } else {
+                console.log(`get ${this.props.currentPath}'s content error`);
+            }
+        }
     }
 
     render() {
@@ -46,7 +60,7 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
     return {
-        changeCurrentCode: (content, path) => dispatch({
+        changeCurrentContent: (content, path) => dispatch({
             type: 'FILE_CONTENT_CHANGE',
             path,
             content,

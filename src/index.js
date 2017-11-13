@@ -17,7 +17,6 @@ import createReducer from './reducer';
 import App from './App';
 
 
-import  mySaga from "./getContentSaga";
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -31,11 +30,10 @@ const theme = createMuiTheme();
 const store = createStore(
     createReducer(),
     compose(
-        applyMiddleware(routerMW, sagaMiddleware),
+        applyMiddleware(routerMW),
     ),
 );
 
-sagaMiddleware.run(mySaga);
 /* eslint-enable */
 
 function render(Component) {
