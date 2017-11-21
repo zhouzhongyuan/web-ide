@@ -9,6 +9,7 @@ import {
 import { connect } from 'react-redux';
 import 'typeface-roboto';
 import AppBar from './component/AppBar';
+import Footer from './component/Footer';
 import Home from './container/Home';
 import Login from './container/Login';
 import ProjectList from './container/ProjectList';
@@ -28,6 +29,7 @@ class App extends Component {
             <div
                 style={{
                     height: '100%',
+                    width: '100%',
                     overflowX: 'hidden',
                     overflowY: 'hidden',
                     display: 'flex',
@@ -53,6 +55,8 @@ class App extends Component {
                     <PrivateRoute exact path="/ide" {...this.props} component={IDE} isAuthenticated={this.props.isAuthenticated} />
                      {/* <PrivateRoute path="/project/:id" component={Project} /> */}
                 </Switch>
+                <Divider />
+                <Footer />
             </div>
         );
     }

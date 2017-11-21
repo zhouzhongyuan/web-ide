@@ -10,10 +10,8 @@ class IDE extends Component {
         return (
             <div
                 style={{
-                    flex: 1,
+                    width: '100%',
                     display: 'flex',
-                    paddingLeft: 24,
-                    marginRight: 24,
                 }}
             >
                 <FileExplorer />
@@ -21,7 +19,8 @@ class IDE extends Component {
                 <div
                     style={{
                         display: 'flex',
-                        flex: 1,
+                        flexShrink: 1,
+                        flexGrow: 1,
                         flexDirection: 'column',
                     }}
                 >
@@ -34,6 +33,8 @@ class IDE extends Component {
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'center',
+                        flexGrow: 0,
+                        flexShrink: 0,
                     }}
                 >
                     <Preview />

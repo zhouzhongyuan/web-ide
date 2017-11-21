@@ -16,3 +16,17 @@ npm run build
 ```
 PORT=4000 npm run server:start
 ```
+
+
+## Contribute(zzy)
+
+### front-end
+```bash
+PORT=4001 npm run start
+```
+
+### server
+```bash
+PORT=4000 npm run server:start:dev
+
+```

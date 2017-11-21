@@ -1,23 +1,37 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import List, { ListItem, ListItemText } from 'material-ui/List';
+import Collapse from 'material-ui/transitions/Collapse';
+import ExpadnLess from 'material-ui-icons/ExpandLess';
+import ExpadnMore from 'material-ui-icons/ExpandMore';
+
 import config from '../config';
 
 const { server } = config;
+const styles = {
+    nested: {
+        paddingLeft: 30,
+    },
+};
+
 class Lists extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-
-        };
+        this.state = {};
         this.changeCurrentPath = this.changeCurrentPath.bind(this);
     }
 
-    changeCurrentPath(path, i) {
+    changeCurrentPath(path) {
         this.setState({
-            selectedIndex: i,
+            selectedKey: path,
         });
-        this.props.changeCurrentPath(path, this.props.pathContent);
+        this.props.changeCurrentPath(path);
+    }
+
+    handleNestedClick(key) {
+        this.setState({
+            [key]: !this.state[key],
+        });
     }
 
     async componentDidMount() {
@@ -25,30 +39,80 @@ class Lists extends React.Component {
         const path = `${server}/fileTree`;
         const response = await fetch(path);
         const fileTree = await response.json();
-        this.props.changeFileTree(fileTree);
+        this.props.changeFileTree(fileTree.data);
     }
+
     render() {
+        const { fileTree } = this.props;
+        const { selectedKey } = this.state;
+        const itemSet = [];
+        for (const key of Object.keys(fileTree)) {
+            const path = fileTree[key].path;
+
+            if (fileTree[key].children && fileTree[key].children.length > 0) {
+                itemSet.push(
+                    <ListItem
+                        key={path}
+                        onClick={() => this.handleNestedClick(`${key}Open`)}
+                        button
+                        style={this.state.selectedKey === path ? { backgroundColor: 'rgba(0,0,0,0.2)' } : {}}
+                    >
+                        <ListItemText
+                            primary={key}
+                        />
+                        {this.state[`${key}Open`] ? <ExpadnLess /> : <ExpadnMore />}
+                    </ListItem>,
+                );
+
+                itemSet.push(
+                    <Collapse
+                        component="li"
+                        in={this.state[`${key}Open`]}
+
+                    >
+                        <List>
+                            {fileTree[key].children.map(item => (
+                                <ListItem
+                                    key={item}
+                                    onClick={() => this.changeCurrentPath(`${path}#${item}`)}
+                                    button
+                                    style={selectedKey === `${path}#${item}` ? Object.assign({}, styles.nested, { backgroundColor: 'rgba(0,0,0,0.2)' }) : styles.nested}
+                                >
+                                    <ListItemText
+                                        primary={item}
+                                    />
+                                </ListItem>
+                            ))
+                            }
+                        </List>
+                    </Collapse>,
+                );
+            } else {
+                itemSet.push(
+                    <ListItem
+                        key={path}
+                        onClick={() => this.changeCurrentPath(path)}
+                        button
+                        style={this.state.selectedKey === path ? { backgroundColor: 'rgba(0,0,0,0.2)' } : {}}
+                    >
+                        <ListItemText
+                            primary={key}
+                        />
+                    </ListItem>,
+                );
+            }
+        }
         return (
             <List
                 style={{
                     width: 246,
                     maxWidth: 246,
+                    flexShrink: 0,
+                    flexGrow: 0,
                 }}
 
             >
-                {this.props.fileTree.map((node, i) => (
-                        <ListItem
-                            key={i}
-                            onClick={() => this.changeCurrentPath(node, i)}
-                            button
-                            style={this.state.selectedIndex === i ? { backgroundColor: 'rgba(0,0,0,0.2)' } : {}}
-                        >
-                            <ListItemText
-                                primary={node}
-                            />
-                        </ListItem>
-                    ))
-                }
+                {itemSet}
             </List>
         );
     }
@@ -63,17 +127,18 @@ function mapStateToProps(state) {
 
     };
 }
+
 function mapDispatchToProps(dispatch) {
     return {
-        changeCurrentPath: (path, pathContent) => dispatch({
-                type: 'CURRENT_PATH_CHANGE',
-                path,
-                pathContent,
-            }),
+        changeCurrentPath: path => dispatch({
+            type: 'CURRENT_PATH_CHANGE',
+            path,
+        }),
         changeFileTree: fileTree => dispatch({
             type: 'FILE_TREE_CHANGE',
             fileTree,
         }),
     };
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(Lists);

@@ -12,9 +12,8 @@ const devConfig = require('../webpack.config.dev.babel');
 // const projectWepackConfig = require('../../../06/yesdemo/src/config/webpack.config');
 var compression = require('compression');
 
-
-const file = require('./routes/file');
-const fileTree = require('./routes/fileTree');
+import file from './routes/file';
+import fileTree from './routes/fileTree';
 
 const app = express();
 
@@ -33,24 +32,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'build')));
 
-
-// front-end
+// TODO 此处代码区分dev or distribution
+/*// front-end
 const compiler = webpack(devConfig);
 app.use(webpackDevMiddleware(compiler, {
     publicPath: "/",
     historyApiFallback: true,
 
 }));
-app.use(webpackHotMiddleware(compiler));
-
-//
-// // project preview
-// const projectCompiler = webpack(projectWepackConfig(true,'',4000));
-// app.use(webpackDevMiddleware(projectCompiler, {
-//     publicPath: '/thgn',
-//
-// }));
-// app.use(webpackHotMiddleware(projectCompiler));
+app.use(webpackHotMiddleware(compiler));*/
 
 
 app.use('/file', file);

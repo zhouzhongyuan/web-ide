@@ -6,8 +6,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import { routerMiddleware, ConnectedRouter } from 'react-router-redux';
 
-import {BrowserRouter, HashRouter} from 'react-router-dom';
-import createSagaMiddleware from 'redux-saga';
+import { HashRouter } from 'react-router-dom';
 
 // Load the favicon, the manifest.json file and the .htaccess file
 /* eslint-disable import/no-webpack-loader-syntax */
@@ -15,11 +14,6 @@ import createHistory from 'history/createBrowserHistory';
 import '!file-loader?name=[name].[ext]!./icon.png'; // eslint-disable-line
 import createReducer from './reducer';
 import App from './App';
-
-
-
-const sagaMiddleware = createSagaMiddleware();
-
 
 const history = createHistory();
 
@@ -31,6 +25,7 @@ const store = createStore(
     createReducer(),
     compose(
         applyMiddleware(routerMW),
+        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
     ),
 );
 
@@ -55,8 +50,7 @@ function render(Component) {
 
 render(App);
 
-
 // Webpack Hot Module Replacement API
 if (module.hot) {
-    module.hot.accept('./App', () => { render(App) })
+    module.hot.accept('./App', () => { render(App); });
 }

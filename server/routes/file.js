@@ -1,34 +1,44 @@
-const express = require('express');
-const fs = require('fs');
-const path = require('path');
-const config = require('../config');
+import express from 'express';
+import path from 'path';
+import { readFile, writeFile } from '../util';
+import config from '../config';
+
 const router = express.Router();
 
-router.get('/', (req, res, next) => {
+router.get('/', async (req, res) => {
     const filePath = path.join(config.projectPath, req.query.path);
-    fs.readFile(filePath, 'utf8', (err, data) => {
-        if (err) {
-            res.json({
-                success: false,
-            });
-            return;
-        }
+    const childPath = req.query.childPath;
+    try {
+        const data = await readFile(filePath);
         res.json({
             success: true,
-            content: data,
+            content: childPath ? JSON.parse(data)[childPath] : data,
         });
-    });
+    } catch (e) {
+        res.json({
+            success: false,
+            content: e,
+        });
+    }
 });
 
-router.put('/', (req, res, next) => {
-    const filePath = path.join(config.projectPath, req.body.path);
-    const code = req.body.code;
-    fs.writeFile(filePath, code, (err) => {
-        if (err) {
-            return console.log(err);
-        }
-        res.send(`Write file ${filePath} success.`);
-    });
+router.put('/', async (req, res) => {
+    const reqPath = req.body.path;
+    const pathArr = reqPath.split('#');
+    const filePath = path.join(config.projectPath, pathArr[0]);
+    const childPath = pathArr[1];
+    let code = req.body.code;
+    if (childPath) {
+        let data = await readFile(filePath);
+        data = JSON.parse(data);
+        data[childPath] = JSON.parse(code);
+        code = JSON.stringify(data, null, 4);
+    }
+    try {
+        const data = await writeFile(filePath, code);
+        res.send(data);
+    } catch (e) {
+        res.send(`Write file ${filePath} fail.`);
+    }
 });
-
-module.exports = router;
+export default router;
