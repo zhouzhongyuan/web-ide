@@ -4,8 +4,10 @@ import List, { ListItem, ListItemText } from 'material-ui/List';
 import Collapse from 'material-ui/transitions/Collapse';
 import ExpadnLess from 'material-ui-icons/ExpandLess';
 import ExpadnMore from 'material-ui-icons/ExpandMore';
-
+import { ContextMenuTrigger } from 'react-contextmenu';
+import ContextMenu from './ContextMenu';
 import config from '../config';
+import { changeFileTree } from '../action';
 
 const { server } = config;
 const styles = {
@@ -20,7 +22,13 @@ class Lists extends React.Component {
         this.state = {};
         this.changeCurrentPath = this.changeCurrentPath.bind(this);
     }
-
+    async componentDidMount() {
+        // get fileTree
+        const path = `${server}/fileTree`;
+        const response = await fetch(path);
+        const fileTree = await response.json();
+        this.props.changeFileTree(fileTree.data);
+    }
     changeCurrentPath(path) {
         this.setState({
             selectedKey: path,
@@ -34,13 +42,7 @@ class Lists extends React.Component {
         });
     }
 
-    async componentDidMount() {
-        // get fileTree
-        const path = `${server}/fileTree`;
-        const response = await fetch(path);
-        const fileTree = await response.json();
-        this.props.changeFileTree(fileTree.data);
-    }
+
 
     render() {
         const { fileTree } = this.props;
@@ -51,17 +53,25 @@ class Lists extends React.Component {
 
             if (fileTree[key].children && fileTree[key].children.length > 0) {
                 itemSet.push(
-                    <ListItem
-                        key={path}
-                        onClick={() => this.handleNestedClick(`${key}Open`)}
-                        button
-                        style={this.state.selectedKey === path ? { backgroundColor: 'rgba(0,0,0,0.2)' } : {}}
+                    <ContextMenuTrigger
+                        id="some_unique_identifier"
+                        path={path}
+                        collect={props => props}
+
                     >
-                        <ListItemText
-                            primary={key}
-                        />
-                        {this.state[`${key}Open`] ? <ExpadnLess /> : <ExpadnMore />}
-                    </ListItem>,
+                        <ListItem
+                            key={path}
+                            onClick={() => this.handleNestedClick(`${key}Open`)}
+                            button
+                            style={this.state.selectedKey === path ? { backgroundColor: 'rgba(0,0,0,0.2)' } : {}}
+                        >
+                            <ListItemText
+                                primary={key}
+                            />
+                            {this.state[`${key}Open`] ? <ExpadnLess /> : <ExpadnMore />}
+                        </ListItem>
+                    </ContextMenuTrigger>
+                    ,
                 );
 
                 itemSet.push(
@@ -72,16 +82,24 @@ class Lists extends React.Component {
                     >
                         <List>
                             {fileTree[key].children.map(item => (
-                                <ListItem
-                                    key={item}
-                                    onClick={() => this.changeCurrentPath(`${path}#${item}`)}
-                                    button
-                                    style={selectedKey === `${path}#${item}` ? Object.assign({}, styles.nested, { backgroundColor: 'rgba(0,0,0,0.2)' }) : styles.nested}
+                                <ContextMenuTrigger
+                                    id="some_unique_identifier"
+                                    path={`${path}#${item}`}
+                                    collect={props => props}
+
                                 >
-                                    <ListItemText
-                                        primary={item}
-                                    />
-                                </ListItem>
+                                    <ListItem
+                                        key={item}
+                                        onClick={() => this.changeCurrentPath(`${path}#${item}`)}
+                                        button
+                                        style={selectedKey === `${path}#${item}` ? Object.assign({}, styles.nested, { backgroundColor: 'rgba(0,0,0,0.2)' }) : styles.nested}
+                                    >
+                                        <ListItemText
+                                            primary={item}
+                                        />
+                                    </ListItem>
+                                </ContextMenuTrigger>
+
                             ))
                             }
                         </List>
@@ -89,16 +107,23 @@ class Lists extends React.Component {
                 );
             } else {
                 itemSet.push(
-                    <ListItem
-                        key={path}
-                        onClick={() => this.changeCurrentPath(path)}
-                        button
-                        style={this.state.selectedKey === path ? { backgroundColor: 'rgba(0,0,0,0.2)' } : {}}
+                    <ContextMenuTrigger
+                        id="some_unique_identifier"
+                        collect={props => props}
+                        path={path}
                     >
-                        <ListItemText
-                            primary={key}
-                        />
-                    </ListItem>,
+                        <ListItem
+                            key={path}
+                            onClick={() => this.changeCurrentPath(path)}
+                            button
+                            style={this.state.selectedKey === path ? { backgroundColor: 'rgba(0,0,0,0.2)' } : {}}
+                        >
+                            <ListItemText
+                                primary={key}
+                            />
+                        </ListItem>
+                    </ContextMenuTrigger>
+                    ,
                 );
             }
         }
@@ -113,6 +138,8 @@ class Lists extends React.Component {
 
             >
                 {itemSet}
+                <ContextMenu />
+
             </List>
         );
     }
@@ -134,10 +161,7 @@ function mapDispatchToProps(dispatch) {
             type: 'CURRENT_PATH_CHANGE',
             path,
         }),
-        changeFileTree: fileTree => dispatch({
-            type: 'FILE_TREE_CHANGE',
-            fileTree,
-        }),
+        changeFileTree: fileTree => dispatch(changeFileTree(fileTree)),
     };
 }
 

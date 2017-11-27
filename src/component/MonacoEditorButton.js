@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Button from 'material-ui/Button';
 import { connect } from 'react-redux';
 import config from '../config';
 
 const { server } = config;
-class MonacoEditorButton extends React.Component {
+class MonacoEditorButton extends Component {
     constructor(props) {
         super(props);
         this.handleSave = this.handleSave.bind(this);
@@ -14,7 +14,7 @@ class MonacoEditorButton extends React.Component {
 
         const path = `${server}/file`;
         const response = await fetch(path, {
-            method: 'PUT',
+            method: 'POST',
             headers: new Headers({
                 'Content-Type': 'application/json',
             }),
@@ -24,7 +24,7 @@ class MonacoEditorButton extends React.Component {
             }),
         });
         const result = await response.text();
-        console.log(result);
+        // TODO SHOW_NOTIFICATION_WITH_TIMEOUT
     }
 
     render() {

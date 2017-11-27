@@ -21,15 +21,12 @@ class MonacoEditorWrap extends Component {
     /* eslint-disable  */
     editorDidMount(editor, monaco) {
         this.editor = editor;
-        console.log('editorDidMount', editor);
         editor.focus();
     }
     onChange(newValue, e) {
         this.props.changeCurrentContent(newValue, this.props.currentPath);
     }
     handleResize(e,f){
-        console.log(window.innerWidth);
-        console.log(e,f);
         this.setState({
             width: window.innerWidth - leftWidth - rightWidth,
         });
@@ -49,9 +46,7 @@ class MonacoEditorWrap extends Component {
             const childPath = currentPathArr[1] || '';
             let queryString = `path=${path}&childPath=${childPath}`;
 
-            console.log(currentPath);
             const remotePath = `${server}/file?${queryString}`;
-            console.log(remotePath);
             const response = await fetch(remotePath);
             const code = await response.json();
             if (code.success) {

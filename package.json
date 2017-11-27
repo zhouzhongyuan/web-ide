@@ -88,6 +88,7 @@
     "normalize.css": "^7.0.0",
     "prop-types": "^15.5.10",
     "react": "^15.5.4",
+    "react-contextmenu": "^2.8.0",
     "react-dom": "^15.5.4",
     "react-hot-loader": "^3.1.2",
     "react-monaco-editor": "^0.8.1",
@@ -98,6 +99,7 @@
     "redux": "^3.7.2",
     "redux-immutable": "^4.0.0",
     "redux-saga": "^0.16.0",
+    "redux-thunk": "^2.2.0",
     "rimraf": "^2.6.2",
     "serve-favicon": "~2.4.2",
     "typeface-roboto": "0.0.35"

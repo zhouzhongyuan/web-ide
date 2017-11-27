@@ -1,7 +1,7 @@
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { fromJS } from 'immutable';
 import { combineReducers } from 'redux-immutable';
-
+import { CHANGE_FILETREE, SHOW_NOTIFICATION_WITH_TIMEOUT } from './action';
 /*
  * routeReducer
  *
@@ -57,15 +57,21 @@ function appReducer(state, action) {
             return Object.assign({}, state, {
                 currentPath: action.path,
             });
-        case 'FILE_TREE_CHANGE':
+        case CHANGE_FILETREE:
             return Object.assign({}, state, {
                 fileTree: action.fileTree,
             });
         case 'FILE_CONTENT_CHANGE':
-            console.log('FILE_CONTENT_CHANGE');
             const newState = Object.assign({}, state);
             newState.content[action.path] = action.content;
             return newState;
+        case SHOW_NOTIFICATION_WITH_TIMEOUT:
+            return Object.assign({}, state, {
+                notification: {
+                    text: action.text,
+                    timeout: action.timeout,
+                },
+            });
         default:
             return state;
     }

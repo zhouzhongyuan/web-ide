@@ -5,7 +5,7 @@ import 'normalize.css';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import { routerMiddleware, ConnectedRouter } from 'react-router-redux';
-
+import thunk from 'redux-thunk';
 import { HashRouter } from 'react-router-dom';
 
 // Load the favicon, the manifest.json file and the .htaccess file
@@ -18,13 +18,14 @@ import App from './App';
 const history = createHistory();
 
 const routerMW = routerMiddleware(history);
+const middleware = [routerMW, thunk];
 
 const theme = createMuiTheme();
 /* eslint-disable no-underscore-dangle */
 const store = createStore(
     createReducer(),
     compose(
-        applyMiddleware(routerMW),
+        applyMiddleware(...middleware),
         window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
     ),
 );

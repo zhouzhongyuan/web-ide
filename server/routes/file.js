@@ -22,7 +22,8 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.put('/', async (req, res) => {
+// 非幂等 修改文件
+router.post('/', async (req, res) => {
     const reqPath = req.body.path;
     const pathArr = reqPath.split('#');
     const filePath = path.join(config.projectPath, pathArr[0]);
@@ -41,4 +42,37 @@ router.put('/', async (req, res) => {
         res.send(`Write file ${filePath} fail.`);
     }
 });
+
+// put 幂等 添加文件
+
+router.put('/', async (req, res) => {
+    const reqPath = req.body.path;
+    const pathArr = reqPath.split('#');
+    const filePath = path.join(config.projectPath, pathArr[0]);
+    const childPath = pathArr[1];
+    let fileContent;
+    if (childPath) {
+        let data = await readFile(filePath);
+        data = JSON.parse(data);
+        data[childPath] = '';
+
+        fileContent = JSON.stringify(data, null, 4);
+    } else {
+        fileContent = '';
+    }
+
+    try {
+        const r = await writeFile(filePath, fileContent);
+        res.json({
+            success: true,
+            data: r,
+        });
+    } catch (e) {
+        res.json({
+            success: false,
+            data: e,
+        });
+    }
+});
+
 export default router;
