@@ -6,7 +6,7 @@ import Dialog, {
     DialogContent,
     DialogContentText,
 } from 'material-ui/Dialog';
-
+import { hideMenu } from 'react-contextmenu/modules/actions';
 export default class AddDialog extends Component {
     constructor(props) {
         super(props);
@@ -47,6 +47,11 @@ export default class AddDialog extends Component {
             this.nameInput.focus();
         }
     }
+    handleKeyUp = (e) => {
+        if (e.key === 'Enter') {
+            this.handleRequestSubmit();
+        }
+    }
     render() {
         const { textValue } = this.state;
         return (
@@ -70,6 +75,7 @@ export default class AddDialog extends Component {
                             fullWidth
                             onChange={this.handleTextChange}
                             inputRef={(input) => { this.nameInput = input; }}
+                            onKeyUp={this.handleKeyUp}
                         />
                     </DialogContent>
                     <DialogActions>

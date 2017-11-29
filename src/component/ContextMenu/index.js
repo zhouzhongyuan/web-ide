@@ -69,6 +69,7 @@ class ContextMenu extends Component {
         return (
 
             <ContextMenuOL
+                hideOnLeave
                 style={{
                     position: 'absolute',
                     zIndex: 9999,

@@ -31,6 +31,11 @@ export default class AddDialog extends Component {
             textValue: e.target.value,
         });
     };
+    handleKeyUp = (e) => {
+        if (e.key === 'Enter') {
+            this.handleRequestSubmit();
+        }
+    }
     render() {
         return (
                 <Dialog
@@ -53,6 +58,8 @@ export default class AddDialog extends Component {
                             type="text"
                             fullWidth
                             onChange={this.handleTextChange}
+                            onKeyUp={this.handleKeyUp}
+
                         />
                     </DialogContent>
                     <DialogActions>
