@@ -23,7 +23,7 @@ export const getFileTree = (currentPath) => async (dispatch) => {
     const path = `${server}/fileTree`;
     let response = await fetch(path);
     response = await response.json();
-    dispatch(changeCurrentPath(currentPath));
+    await dispatch(changeCurrentPath(currentPath));
     return dispatch(changeFileTree(response.data));
 };
 

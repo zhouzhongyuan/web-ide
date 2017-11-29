@@ -12,6 +12,7 @@ export default class AddDialog extends Component {
         super(props);
         this.state = {
             textValue: '',
+            selectAndFocus: false,
         };
     }
     handleRequestClose = () => {
@@ -19,18 +20,31 @@ export default class AddDialog extends Component {
     };
     handleRequestSubmit = () => {
         const { path } = this.props;
-        const relativePath = `${path.slice(0,path.lastIndexOf('#'))}#${this.state.textValue}`;
+        const relativePath = `${path.slice(0, path.lastIndexOf('#'))}#${this.state.textValue}`;
         this.props.handleModalSubmit(this.props.type, this.props.path, relativePath);
         this.handleRequestClose();
     };
     handleTextChange = (e) => {
         this.setState({
             textValue: e.target.value,
+            selectAndFocus: false,
         });
     };
-    componentWillReceiveProps(nextProps){
-        if (nextProps.path !== this.props.path) {
-            this.setState({ textValue: nextProps.path });
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.open && this.props.open !== nextProps.open) {
+            this.setState({
+                selectAndFocus: true,
+                textValue: nextProps.path,
+            });
+        }
+    }
+    componentDidUpdate() {
+        this.selectAndFocusInput();
+    }
+    selectAndFocusInput = () => {
+        if (this.nameInput && this.state.selectAndFocus) {
+            this.nameInput.select();
+            this.nameInput.focus();
         }
     }
     render() {
@@ -50,12 +64,12 @@ export default class AddDialog extends Component {
                         </DialogContentText>
                         <TextField
                             value={textValue.slice(textValue.lastIndexOf('#') + 1)}
-                            autoFocus
                             margin="dense"
                             id="name"
                             type="text"
                             fullWidth
                             onChange={this.handleTextChange}
+                            inputRef={(input) => { this.nameInput = input; }}
                         />
                     </DialogContent>
                     <DialogActions>

@@ -42,7 +42,13 @@ class Lists extends React.Component {
             [key]: !this.state[key],
         });
     }
-
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.currentPath !== this.props.currentPath) {
+            this.setState({
+                selectedKey: nextProps.currentPath
+            });
+        }
+    }
     render() {
         const { fileTree } = this.props;
         const { selectedKey } = this.state;
@@ -163,7 +169,6 @@ function mapStateToProps(state) {
     return {
         currentPath: app.currentPath,
         fileTree: app.fileTree,
-        pathContent: app.content[app.currentPath],
 
     };
 }
