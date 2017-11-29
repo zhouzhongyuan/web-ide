@@ -15,15 +15,12 @@ export default class AddDialog extends Component {
         };
     }
     handleRequestClose = () => {
-        this.setState({
-            textValue: '',
-        });
         this.props.handleModalClose(this.props.type);
     };
     handleRequestSubmit = () => {
         const { path } = this.props;
-        const relativePath = `${path.slice(0, path.lastIndexOf('#') === -1 ? path.length : path.lastIndexOf('#') )}#${this.state.textValue}`;
-        this.props.handleModalSubmit(this.props.type, relativePath);
+        const relativePath = `${path.slice(0,path.lastIndexOf('#'))}#${this.state.textValue}`;
+        this.props.handleModalSubmit(this.props.type, this.props.path, relativePath);
         this.handleRequestClose();
     };
     handleTextChange = (e) => {
@@ -31,7 +28,13 @@ export default class AddDialog extends Component {
             textValue: e.target.value,
         });
     };
+    componentWillReceiveProps(nextProps){
+        if (nextProps.path !== this.props.path) {
+            this.setState({ textValue: nextProps.path });
+        }
+    }
     render() {
+        const { textValue } = this.state;
         return (
                 <Dialog
                     open={this.props.open}
@@ -43,10 +46,10 @@ export default class AddDialog extends Component {
                         }}
                     >
                         <DialogContentText>
-                            请输入billform名称
+                            请输入新的billform名称
                         </DialogContentText>
                         <TextField
-                            value={this.state.textValue}
+                            value={textValue.slice(textValue.lastIndexOf('#') + 1)}
                             autoFocus
                             margin="dense"
                             id="name"

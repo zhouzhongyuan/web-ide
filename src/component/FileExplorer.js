@@ -8,6 +8,7 @@ import { ContextMenuTrigger } from 'react-contextmenu';
 import ContextMenu from './ContextMenu';
 import config from '../config';
 import { changeFileTree } from '../action';
+import { changeCurrentPath } from '../action/index';
 
 const { server } = config;
 const styles = {
@@ -42,8 +43,6 @@ class Lists extends React.Component {
         });
     }
 
-
-
     render() {
         const { fileTree } = this.props;
         const { selectedKey } = this.state;
@@ -54,7 +53,7 @@ class Lists extends React.Component {
             if (fileTree[key].children && fileTree[key].children.length > 0) {
                 itemSet.push(
                     <ContextMenuTrigger
-                        id="some_unique_identifier"
+                        id="billform"
                         path={path}
                         collect={props => props}
 
@@ -83,7 +82,7 @@ class Lists extends React.Component {
                         <List>
                             {fileTree[key].children.map(item => (
                                 <ContextMenuTrigger
-                                    id="some_unique_identifier"
+                                    id="billformItem"
                                     path={`${path}#${item}`}
                                     collect={props => props}
 
@@ -107,24 +106,16 @@ class Lists extends React.Component {
                 );
             } else {
                 itemSet.push(
-                    <ContextMenuTrigger
-                        id="some_unique_identifier"
-                        collect={props => props}
-                        path={path}
+                    <ListItem
+                        key={path}
+                        onClick={() => this.changeCurrentPath(path)}
+                        button
+                        style={this.state.selectedKey === path ? { backgroundColor: 'rgba(0,0,0,0.2)' } : {}}
                     >
-                        <ListItem
-                            key={path}
-                            onClick={() => this.changeCurrentPath(path)}
-                            button
-                            style={this.state.selectedKey === path ? { backgroundColor: 'rgba(0,0,0,0.2)' } : {}}
-                        >
-                            <ListItemText
-                                primary={key}
-                            />
-                        </ListItem>
-                    </ContextMenuTrigger>
-                    ,
-                );
+                        <ListItemText
+                            primary={key}
+                        />
+                    </ListItem>);
             }
         }
         return (
@@ -134,12 +125,34 @@ class Lists extends React.Component {
                     maxWidth: 246,
                     flexShrink: 0,
                     flexGrow: 0,
+                    zIndex: 1,
                 }}
 
             >
                 {itemSet}
-                <ContextMenu />
+                <ContextMenu
+                    menuList={[
+                        {
+                            label: '增加',
+                            type: 'add',
+                        },
+                    ]}
+                    id="billform"
 
+                />
+                <ContextMenu
+                    menuList={[
+                        {
+                            label: '删除',
+                            type: 'delete',
+                        },
+                        {
+                            label: '重命名',
+                            type: 'rename',
+                        },
+                    ]}
+                    id="billformItem"
+                />
             </List>
         );
     }
@@ -157,10 +170,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        changeCurrentPath: path => dispatch({
-            type: 'CURRENT_PATH_CHANGE',
-            path,
-        }),
+        changeCurrentPath: path => dispatch(changeCurrentPath(path)),
         changeFileTree: fileTree => dispatch(changeFileTree(fileTree)),
     };
 }

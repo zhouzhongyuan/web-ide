@@ -1,7 +1,7 @@
 import { LOCATION_CHANGE } from 'react-router-redux';
 import { fromJS } from 'immutable';
 import { combineReducers } from 'redux-immutable';
-import { CHANGE_FILETREE, SHOW_NOTIFICATION_WITH_TIMEOUT } from './action';
+import { CHANGE_FILETREE, SHOW_NOTIFICATION_WITH_TIMEOUT, CHANGE_CURRENT_PATH } from './action';
 /*
  * routeReducer
  *
@@ -53,7 +53,7 @@ function appReducer(state, action) {
             return Object.assign({}, state, {
                 user: {},
             });
-        case 'CURRENT_PATH_CHANGE':
+        case CHANGE_CURRENT_PATH:
             return Object.assign({}, state, {
                 currentPath: action.path,
             });

@@ -1,37 +1,25 @@
 import React, { Component } from 'react';
 import Button from 'material-ui/Button';
-import TextField from 'material-ui/TextField';
 import Dialog, {
     DialogActions,
     DialogContent,
     DialogContentText,
 } from 'material-ui/Dialog';
 
-export default class AddDialog extends Component {
+export default class DeleteDialog extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            textValue: '',
-        };
     }
     handleRequestClose = () => {
-        this.setState({
-            textValue: '',
-        });
         this.props.handleModalClose(this.props.type);
     };
     handleRequestSubmit = () => {
-        const { path } = this.props;
-        const relativePath = `${path.slice(0, path.lastIndexOf('#') === -1 ? path.length : path.lastIndexOf('#') )}#${this.state.textValue}`;
-        this.props.handleModalSubmit(this.props.type, relativePath);
+        // handle path
+        this.props.handleModalSubmit(this.props.type, this.props.path);
         this.handleRequestClose();
     };
-    handleTextChange = (e) => {
-        this.setState({
-            textValue: e.target.value,
-        });
-    };
     render() {
+        const { path } = this.props;
         return (
                 <Dialog
                     open={this.props.open}
@@ -43,24 +31,15 @@ export default class AddDialog extends Component {
                         }}
                     >
                         <DialogContentText>
-                            请输入billform名称
+                            {`确定删除${path.slice(path.lastIndexOf('#') + 1)}？`}
                         </DialogContentText>
-                        <TextField
-                            value={this.state.textValue}
-                            autoFocus
-                            margin="dense"
-                            id="name"
-                            type="text"
-                            fullWidth
-                            onChange={this.handleTextChange}
-                        />
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleRequestClose} color="primary">
                             取消
                         </Button>
                         <Button onClick={this.handleRequestSubmit} color="primary">
-                            提交
+                            确定
                         </Button>
                     </DialogActions>
                 </Dialog>

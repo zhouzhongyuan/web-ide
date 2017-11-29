@@ -3,13 +3,17 @@ import { connect } from 'react-redux';
 import List, { ListItem, ListItemText } from 'material-ui/List';
 import { ContextMenu as ContextMenuOL } from 'react-contextmenu';
 import AddDialog from './AddDialog';
-import { addFile as addFileAction } from '../../action';
-
+import DeleteDialog from './DeleteDialog';
+import RenameDialog from './RenameDialog';
+import { addFile as addFileAction, deleteFile as deleteFileAction, renameFile as renameFileAction, changeCurrentPath } from '../../action';
+import 'react-contextmenu/public/styles.css';
 class ContextMenu extends Component {
     constructor(props) {
         super(props);
         this.state = {
             addDialogOpen: false,
+            deleteDialogOpen: false,
+            renameDialogOpen: false,
             path: '/',
         };
         this.handleMenuClick = this.handleMenuClick.bind(this);
@@ -25,8 +29,14 @@ class ContextMenu extends Component {
                 });
                 break;
             case 'delete':
+                this.setState({
+                    deleteDialogOpen: true,
+                });
                 break;
             case 'rename':
+                this.setState({
+                    renameDialogOpen: true,
+                });
                 break;
             default:
         }
@@ -41,50 +51,38 @@ class ContextMenu extends Component {
             path: e.detail.data.path,
         });
     }
-    handleModalSubmit(menuType, path) {
+    handleModalSubmit(menuType, path, newPath) {
         switch (menuType) {
             case 'add':
                 this.props.addFile(path);
                 break;
             case 'delete':
+                this.props.deleteFile(path);
                 break;
             case 'rename':
+                this.props.renameFile(path, newPath);
                 break;
             default:
         }
     }
     render() {
-        const menuList = [
-            {
-                label: '增加',
-                type: 'add',
-            },
-            {
-                label: '删除',
-                type: 'delet',
-            },
-            {
-                label: '重命名',
-                type: 'rename',
-            },
-        ];
         return (
 
             <ContextMenuOL
-                id="some_unique_identifier"
+                style={{
+                    position: 'absolute',
+                    zIndex: 9999,
+                }}
+                id={this.props.id}
                 collect={props => props}
                 onShow={this.handleModalShow}
             >
                 <List
                     style={{
-                        width: 140,
-                        backgroundColor: 'grey',
-                        position: 'absolute',
-                        zInde: 999,
+                        zIndex: 999,
                     }}
-
                 >
-                    {menuList.map(menu => (
+                    {this.props.menuList.map(menu => (
                         <ListItem
                             key={menu.actionType}
                             button
@@ -100,6 +98,20 @@ class ContextMenu extends Component {
                 <AddDialog
                     type="add"
                     open={this.state.addDialogOpen}
+                    handleModalClose={this.handleModalClose}
+                    handleModalSubmit={this.handleModalSubmit}
+                    path={this.state.path}
+                />
+                <DeleteDialog
+                    type="delete"
+                    open={this.state.deleteDialogOpen}
+                    handleModalClose={this.handleModalClose}
+                    handleModalSubmit={this.handleModalSubmit}
+                    path={this.state.path}
+                />
+                <RenameDialog
+                    type="rename"
+                    open={this.state.renameDialogOpen}
                     handleModalClose={this.handleModalClose}
                     handleModalSubmit={this.handleModalSubmit}
                     path={this.state.path}
@@ -122,15 +134,14 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        changeCurrentPath: path => dispatch({
-            type: 'CURRENT_PATH_CHANGE',
-            path,
-        }),
+        changeCurrentPath: path => dispatch(changeCurrentPath(path)),
         changeFileTree: fileTree => dispatch({
             type: 'FILE_TREE_CHANGE',
             fileTree,
         }),
         addFile: path => dispatch(addFileAction(path)),
+        deleteFile: path => dispatch(deleteFileAction(path)),
+        renameFile: (path, newPath) => dispatch(renameFileAction(path, newPath)),
     };
 }
 

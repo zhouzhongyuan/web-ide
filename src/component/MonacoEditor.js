@@ -38,8 +38,7 @@ class MonacoEditorWrap extends Component {
     async componentDidUpdate(){
 
         const {pathContent, currentPath, changeCurrentContent} = this.props;
-
-        if(!pathContent){
+        if(typeof pathContent ==='undefined'){
 
             const currentPathArr = currentPath.split('#');
             const path = currentPathArr[0];
