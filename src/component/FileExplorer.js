@@ -61,6 +61,7 @@ class Lists extends React.Component {
                     <ContextMenuTrigger
                         id="billform"
                         path={path}
+                        key={path}
                         collect={props => props}
 
                     >
@@ -83,6 +84,7 @@ class Lists extends React.Component {
                     <Collapse
                         component="li"
                         in={this.state[`${key}Open`]}
+                        key="billformWrapper"
 
                     >
                         <List>
@@ -90,6 +92,7 @@ class Lists extends React.Component {
                                 <ContextMenuTrigger
                                     id="billformItem"
                                     path={`${path}#${item}`}
+                                    key={`${path}#${item}`}
                                     collect={props => props}
 
                                 >
