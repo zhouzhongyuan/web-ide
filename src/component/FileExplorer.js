@@ -82,7 +82,6 @@ class Lists extends React.Component {
 
                 itemSet.push(
                     <Collapse
-                        component="li"
                         in={this.state[`${key}Open`]}
                         key="billformWrapper"
 
