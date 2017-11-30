@@ -2,6 +2,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = require('./webpack.base.babel')({
     // In production, we skip all hot-reloading stuff
@@ -28,7 +29,12 @@ module.exports = require('./webpack.base.babel')({
             minChunks: 2,
             async: true,
         }),
-
+        new CopyWebpackPlugin([
+            {
+                from: 'node_modules/monaco-editor/min/vs',
+                to: 'vs',
+            },
+        ]),
         // Minify and optimize the index.html
         new HtmlWebpackPlugin({
             template: './src/index.html',

@@ -10,15 +10,16 @@ const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const devConfig = require('../webpack.config.dev.babel');
 // const projectWepackConfig = require('../../../06/yesdemo/src/config/webpack.config');
-var compression = require('compression');
+const compression = require('compression');
 
 import file from './routes/file';
 import fileTree from './routes/fileTree';
+import index from './routes/index';
 
 const app = express();
 
 app.use(compression());
-app.use(cors())
+app.use(cors());
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -29,23 +30,11 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'build')));
-
-// TODO 此处代码区分dev or distribution
-/*// front-end
-const compiler = webpack(devConfig);
-app.use(webpackDevMiddleware(compiler, {
-    publicPath: "/",
-    historyApiFallback: true,
-
-}));
-app.use(webpackHotMiddleware(compiler));*/
-
+app.use(express.static(path.join(__dirname, '../build')));
 
 app.use('/file', file);
 app.use('/fileTree', fileTree);
-
+app.use('/', index);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
