@@ -85,7 +85,7 @@ class ContextMenu extends Component {
                 >
                     {this.props.menuList.map(menu => (
                         <ListItem
-                            key={menu.actionType}
+                            key={menu.type}
                             button
                             onClick={() => this.handleMenuClick(menu.type)}
                         >

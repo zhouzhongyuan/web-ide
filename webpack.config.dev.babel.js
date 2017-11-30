@@ -1,18 +1,14 @@
-
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-
-
-
 module.exports = {
     entry: {
         app: [
-            // 'webpack-dev-server/client?http://localhost:80',
-            'react-hot-loader/patch',
-            'webpack-hot-middleware/client',
             'babel-polyfill',
+            // 'react-hot-loader/patch',
+            // 'webpack-hot-middleware/client',
+            'webpack-dev-server/client?http://localhost/',
             path.resolve(__dirname, 'src/index.js'),
         ],
     },
@@ -27,14 +23,10 @@ module.exports = {
     devtool: 'eval-source-map',
     module: {
         loaders: [
-            // Load ES6/JSX
             {
                 test: /\.jsx?$/,
                 loader: 'babel-loader',
-                query: {
-                    babelrc: false,
-                    presets: ['es2015', 'react', 'stage-1'],
-                },
+                exclude: [/node_modules/],
             },
             {
                 test: /\.css$/,
@@ -65,10 +57,7 @@ module.exports = {
                 to: 'vs',
             },
         ]),
-        new webpack.optimize.OccurrenceOrderPlugin(),
         new webpack.NamedModulesPlugin(),
         new webpack.HotModuleReplacementPlugin(),
-        // Use NoErrorsPlugin for webpack 1.x
-        new webpack.NoEmitOnErrorsPlugin()
     ],
 };

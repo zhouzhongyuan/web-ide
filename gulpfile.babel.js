@@ -39,12 +39,8 @@ gulp.task('serve:start',
                 'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
             }, // 防止可能的跨域
             compress: true, // gzip压缩
-            contentBase: './build', // html文件所在的位置
-            disableHostCheck: true,
-            historyApiFallback: true, // 所欲route都到index.html
         },
-    )
-        .listen(PORT, '0.0.0.0', (err) => {
+    ).listen(PORT, '0.0.0.0', (err) => {
             if (err) throw new $.util.PluginError('webpack-dev-server', err);
             $.util.log(`[${packageJson.name} serve]`, `Listening at 0.0.0.0:${PORT}`);
         }),

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import 'babel-polyfill';
+require('babel-polyfill');
 /**
  * Module dependencies.
  */
