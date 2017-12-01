@@ -1,3 +1,4 @@
 echo "hook works"
 npm install
 ./node_modules/.bin/webpack --config=webpack.config.prod.babel.js
+webpack --config=webpack.config.prod.babel.js
