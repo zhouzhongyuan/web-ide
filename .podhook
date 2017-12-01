@@ -1,4 +1,3 @@
-component install
 echo hook works
 npm install
 npm run build
