@@ -1,0 +1,16 @@
+{
+
+    // passed to the app as process.env.NODE_ENV
+    // if not set, will inherit from global settings
+    "node_env": "production",
+
+    // passed to the app as process.env.PORT
+    // if not set, pod will try to parse from app's
+    // main file (for displaying only), but not
+    // guarunteed to be correct.
+    "port": 4000,
+
+    // pod will look for this script before checking
+    // in package.json of the app.
+    "script": "npm run server:start"
+}
