@@ -12,5 +12,5 @@
 
     // pod will look for this script before checking
     // in package.json of the app.
-    "script": "server:es5/bin/www"
+    "script": "server:es5/bin/www.js"
 }
