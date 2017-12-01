@@ -7,7 +7,7 @@
     "build": "webpack --config=webpack.config.prod.babel.js",
     "start": "gulp serve",
     "server:start": "npm run build && npm run server:build && node server:es5/bin/www",
-    "server:build": "babel server --out-dir server:es5 --copy-files",
+    "server:build": "./node_modules/.bin/babel server --out-dir server:es5 --copy-files",
     "server:build:watch": "babel server --out-dir server:es5 --copy-files --watch &",
     "server:nodemon": "nodemon server:es5/bin/www",
     "server:start:dev": "npm run server:build && npm run server:nodemon"
