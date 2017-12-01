@@ -2,6 +2,7 @@
   "name": "web-ide",
   "version": "0.0.1",
   "description": "web ide",
+  "main": "server:es5/bin/www.js",
   "scripts": {
     "build": "webpack --config=webpack.config.prod.babel.js",
     "start": "gulp serve",
