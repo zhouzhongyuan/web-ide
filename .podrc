@@ -12,5 +12,5 @@
 
     // pod will look for this script before checking
     // in package.json of the app.
-    "script": "npm run server:start"
+    "script": "server:start"
 }
