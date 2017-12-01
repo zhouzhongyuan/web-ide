@@ -1,7 +1,6 @@
 echo hook works
 npm install
-npm run build
-./node_modules/.bin/babel server --out-dir server:es5 --copy-files
+webpack --config=webpack.config.prod.babel.js
 passed=$?
 if [[ $passed != 0 ]]; then
     # test failed, exit. app's working tree on the server will be reset.
