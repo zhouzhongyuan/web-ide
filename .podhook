@@ -1,3 +1,4 @@
 echo "hook works"
 npm install
+echo "install success"
 npm run build
