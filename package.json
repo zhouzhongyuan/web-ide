@@ -4,8 +4,8 @@
   "description": "web ide",
   "main": "server:es5/bin/www.js",
   "scripts": {
-    "build": "./node_modules/.bin/webpack --config=webpack.config.prod.babel.js",
-    "server:build": "./node_modules/.bin/babel server --out-dir server:es5 --copy-files",
+    "build": "webpack --config=webpack.config.prod.babel.js",
+    "server:build": "babel server --out-dir server:es5 --copy-files",
     "server:start": "npm run build && npm run server:build && node server:es5/bin/www",
     "fe:start": "gulp serve",
     "server:dev:build": "babel server --out-dir server:es5 --copy-files --watch &",

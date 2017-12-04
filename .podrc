@@ -1,6 +1,0 @@
-{
-    "node_env": "production",
-    "port": 4000,
-    "script": "server:es5/bin/www.js",
-    "defaultScript": "server:es5/bin/www.js"
-}

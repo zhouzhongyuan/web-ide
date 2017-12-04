@@ -1,0 +1,4 @@
+{
+    "port": 4000,
+    "script": "server:es5/bin/www.js"
+}
