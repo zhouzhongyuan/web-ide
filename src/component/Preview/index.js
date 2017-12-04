@@ -8,6 +8,7 @@ import deivceAndroidBgImage from './devices-sprite.jpg';
 import config from '../../config';
 
 const { previewURL } = config;
+console.log(config);
 const styleSheet = createStyleSheet({
     root: {
         flexDirection: 'row',

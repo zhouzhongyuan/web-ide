@@ -86,6 +86,7 @@
     "mz": "^2.7.0",
     "normalize.css": "^7.0.0",
     "prop-types": "^15.5.10",
+    "public-ip": "^2.4.0",
     "react": "^15.5.4",
     "react-contextmenu": "^2.8.0",
     "react-dom": "^15.5.4",
