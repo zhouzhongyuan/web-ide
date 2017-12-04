@@ -31,7 +31,7 @@ class Lists extends React.Component {
         if (fileTree.success) {
             this.props.changeFileTree(fileTree.data);
         } else {
-            console.log(fileTree.data);
+            throw new Error('get fileTree error',fileTree.data);
         }
     }
     changeCurrentPath(path) {
