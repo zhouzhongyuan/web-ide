@@ -28,7 +28,11 @@ class Lists extends React.Component {
         const path = `${server}/fileTree`;
         const response = await fetch(path);
         const fileTree = await response.json();
-        this.props.changeFileTree(fileTree.data);
+        if (fileTree.success) {
+            this.props.changeFileTree(fileTree.data);
+        } else {
+            console.log(fileTree.data);
+        }
     }
     changeCurrentPath(path) {
         this.setState({
@@ -45,7 +49,7 @@ class Lists extends React.Component {
     componentWillReceiveProps(nextProps) {
         if (nextProps.currentPath !== this.props.currentPath) {
             this.setState({
-                selectedKey: nextProps.currentPath
+                selectedKey: nextProps.currentPath,
             });
         }
     }
